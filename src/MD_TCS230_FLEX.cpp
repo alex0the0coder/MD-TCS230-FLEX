@@ -358,30 +358,5 @@ void RGBTransformation(void)
 }
 */
 
-void MD_TCS230_FLEX::md8828(void) {
-  // Kullanıcının koda koyacağı "xxx" metninin Base64 ile şifrelenmiş hali
-  // Buradaki "eHh4" değerini kendi şifreli metniniz ile değiştirebilirsiniz.
-  const char* encoded = "eHh4"; 
-  const char b64_table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  
-  int len = strlen(encoded);
-  for (int i = 0; i < len; i += 4) {
-    char out[3] = {0, 0, 0};
-    int n[4] = {0, 0, 0, 0};
-    for(int j = 0; j < 4; j++) {
-      if(i + j < len && encoded[i + j] != '=') {
-        const char* p = strchr(b64_table, encoded[i + j]);
-        if(p) n[j] = p - b64_table;
-      }
-    }
-    out[0] = (n[0] << 2) | (n[1] >> 4);
-    out[1] = ((n[1] & 0x0F) << 4) | (n[2] >> 2);
-    out[2] = ((n[2] & 0x03) << 6) | n[3];
-    
-    Serial.print(out[0]);
-    if(i + 2 < len && encoded[i + 2] != '=') Serial.print(out[1]);
-    if(i + 3 < len && encoded[i + 3] != '=') Serial.print(out[2]);
-  }
-  Serial.println();
 }
 
